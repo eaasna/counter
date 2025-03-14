@@ -10,7 +10,7 @@
 struct configuration
 {
     std::filesystem::path fasta_input{};
-    std::filesystem::path fasta_output{};
+    std::filesystem::path output{"output_index"};
     bool verbose{}; // Default is false.
     std::string shape_input{"1111"};
     uint8_t shape_size;

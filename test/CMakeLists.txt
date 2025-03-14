@@ -12,6 +12,7 @@ include (test/config)
 include (data/datasources.cmake)
 
 add_app_test (api_shape_test.cpp)
+add_app_test (api_kmer_from_hash_test.cpp)
 add_app_test (cli_counter_test.cpp)
 
 message (STATUS "You can run `make check` to build and run tests.")

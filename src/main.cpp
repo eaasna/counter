@@ -10,6 +10,7 @@
 #include <seqan3/core/debug_stream.hpp>
 #include <sharg/all.hpp>
 
+#include <cereal/archives/xml.hpp>
 #include <iostream>
 
 using namespace seqan3::literals;
@@ -32,11 +33,11 @@ int main(int argc, char ** argv)
                                                .validator = sharg::input_file_validator{{"fa", "fasta"}}});
     
     
-    // Open: Output FASTA file. Default: print to terminal - handled in fastq_conversion.cpp.
-    parser.add_option(config.fasta_output,
+    // Output file. Default: print to terminal 
+    parser.add_option(config.output,
                       sharg::config{.short_id = 'o',
                                     .long_id = "output",
-                                    .description = "The output text file with counted Kmere.",
+                                    .description = "The output file with counted Kmere.",
                                     .default_message = "Print to terminal (stdout)",
                                     .validator = sharg::output_file_validator{}});
 
@@ -86,7 +87,10 @@ int main(int argc, char ** argv)
 
     }
 
-    counting_index index(config);
+    counting_index kmer_index(config);
+    std::ofstream os(config.output);
+    cereal::XMLOutputArchive archive( os );
+    kmer_index.save(archive);
 
     if (config.verbose) // If flag is set.
     	std::cerr << "Counting was a success. Congrats!\n";
